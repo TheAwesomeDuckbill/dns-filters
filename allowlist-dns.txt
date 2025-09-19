@@ -1,80 +1,73 @@
 ! ============================================================
-! Allowlist für AdGuard Home (Ausnahmen/Whitelist) – strikt/minimal
-! Zweck: Nur das Nötigste erlauben, damit harte Anti-DNS-Evasion-Listen
-!        nicht produktive Dienste zerschießen.
+! Allowlist – MAIN (minimal + stabil, inkl. Gäste/Android/Fire TV)
+! + HA-spezifische Ausnahmen am Ende (client-scoped)
 ! Stand: 2025-09-19
 ! ============================================================
 
-! --- Router / MyFritz (nur was funktional gebraucht wird) ---
+! --- Router / MyFritz (Remote-Domain) ---
 @@||fritz.box^
 @@||*.myfritz.net^
 
+! --- Provider / Telekom (Portale/Mails – optional, aber ok) ---
+@@||*.telekom.de^
+@@||*.t-online.de^
+
 ! --- Eigene DynDNS / eigene Domains ---
-@@||awesomeduckbill.synology.me^           ! ALTERNATIVE Schreibweise – nutze die korrekte und lösche die andere
+@@||awesomeduckbill.synology.me^
 @@||*.awesomeduckbill.synology.me^
 @@||flower.jp.net^
 @@||*.flower.jp.net^
 
-! --- Synology (gezielt, keine Broad-Whitelists) ---
-@@||update.synology.com^                   ! DSM/Package-Updates
-@@||time.synology.com^                     ! NTP von Synology
-@@||global.download.synology.com^          ! Image/Package CDN
-!@@||quickconnect.to^                      ! NUR aktivieren, wenn du QuickConnect wirklich nutzt
+! --- Synology (nur funktional) ---
+@@||update.synology.com^
+@@||time.synology.com^
 
-! --- GitHub (nur Raw/Objects für Filter/Assets) ---
+! --- GitHub (HACS/Downloads – minimal) ---
+@@||api.github.com^
 @@||raw.githubusercontent.com^
 @@||objects.githubusercontent.com^
+@@||codeload.github.com^
 
-! --- Container Registries (für Docker/Watchtower Pulls) ---
+! --- Container Registries / Docker (Updates/Images) ---
 @@||registry-1.docker.io^
+@@||index.docker.io^
 @@||auth.docker.io^
 @@||production.cloudflare.docker.com^
 @@||ghcr.io^
-!@@||quay.io^                              ! Nur falls du Images von Quay nutzt
+@@||quay.io^
 
-! --- Portainer (gezielte Endpunkte; Website-Domain NICHT nötig) ---
+! --- Portainer (nur Download/Checks, keine Top-Domain) ---
 @@||downloads.portainer.io^
 @@||get.portainer.io^
 @@||check.portainer.io^
 
-! --- Philips Hue (API/Discovery – keine breite Wildcards) ---
-@@||discovery.meethue.com^
+! --- Philips Hue (Cloud minimal: Auth + Discovery) ---
 @@||api.meethue.com^
+@@||discovery.meethue.com^
 
-! --- Govee (Cloud/API/Developer – präzise Endpunkte) ---
+! --- Govee (MQTT + Cloud für App/Re-Connects) ---
+@@||mqtt.govee.com^
 @@||api.govee.com^
 @@||app.govee.com^
-@@||openapi.api.govee.com^
-@@||developer-api.govee.com^
-@@||mqtt.govee.com^                        ! Nur falls tatsächlich genutzt
 
-! --- Home Assistant / Nabu Casa (richtiges TLD) ---
-@@||home-assistant.io^
-@@||*.home-assistant.io^
-@@||nabu.casa^
-@@||*.nabu.casa^                           ! Remote UI etc.
+! --- Home Assistant (Version-Info) ---
+@@||version.home-assistant.io^
 
-! --- Plex / Jellyfin (für Login/Remote/TLS-intern) ---
+! --- NINA / BBK (Warn-App; global wichtig für Smartphones) ---
+@@||warnung.bund.de^
+@@||*.warnung.bund.de^
+
+! --- Plex (Login/Discovery + lokale TLS via plex.direct) ---
 @@||plex.tv^
 @@||*.plex.tv^
-@@||*.plex.direct^                         ! lokales TLS (SAN)
-!@@||jellyfin.org^                         ! Nur wenn du externe Jellyfin-Dienste/Repos brauchst
+@@||plex.direct^
+@@||*.plex.direct^
 
 ! --- JDownloader (Betrieb/Updates) ---
 @@||api.jdownloader.org^
 @@||update.jdownloader.org^
 
-! --- Android / Pixel (Connectivity/Push/Play – minimal) ---
-@@||connectivitycheck.gstatic.com^         ! Captive-Portal-Check
-@@||clients3.google.com^                   ! Connectivity-Check
-@@||mtalk.google.com^                      ! FCM Push
-@@||play.googleapis.com^                   ! Play Store
-@@||firebaseinstallations.googleapis.com^
-@@||firebaseremoteconfig.googleapis.com^
-@@||dl.google.com^                         ! App-/Play-Downloads
-@@||gvt1.com^                              ! Google CDN für Downloads
-
-! --- Zertifikatsprüfung (OCSP/CRL; nötig für TLS-Kette) ---
+! --- Zertifikate/OCSP/CRL (LE/DigiCert/Sectigo/Google) ---
 @@||letsencrypt.org^
 @@||*.letsencrypt.org^
 @@||lencr.org^
@@ -87,14 +80,70 @@
 @@||ocsp.sectigo.com^
 @@||crt.sectigo.com^
 
-! --- Mullvad (nur was für App/CLI/Checks nötig ist; KEIN DoH-Whitelist) ---
+! --- Mullvad (gezielt; KEIN '*.mullvad.net' pauschal) ---
 @@||api.mullvad.net^
 @@||am.i.mullvad.net^
 @@||relays.mullvad.net^
 @@||*.relays.mullvad.net^
-! (Kein www.mullvad.net, kein dns.mullvad.net/doh – DoH soll NICHT um die Filter herum!)
 
-! --- Lokale Pseudo-TLDs / interne Hosts (optional) ---
+! --- Android / Fire TV: Konnektivität, Push, Play/Downloads ---
+@@||connectivitycheck.gstatic.com^
+@@||clients3.google.com^
+@@||mtalk.google.com^
+@@||play.googleapis.com^
+@@||firebaseinstallations.googleapis.com^
+@@||firebaseremoteconfig.googleapis.com^
+@@||dl.google.com^
+@@||gvt1.com^
+
+! --- Lokale Pseudo-TLDs ---
 @@||*.local^
 @@||*.lan^
 @@||*.home^
+
+
+! ============================================================
+! HA-SPEZIFISCH (client-scoped) – nur für:
+!   192.168.178.40  UND  homeassistant.fritz.box
+! (zwei Regeln je Eintrag, für 100% Kompatibilität)
+! ============================================================
+
+! --- Google OAuth / APIs (nur für HA) ---
+@@||accounts.google.com^$client=192.168.178.40
+@@||accounts.google.com^$client=homeassistant.fritz.box
+@@||oauth2.googleapis.com^$client=192.168.178.40
+@@||oauth2.googleapis.com^$client=homeassistant.fritz.box
+@@||www.googleapis.com^$client=192.168.178.40
+@@||www.googleapis.com^$client=homeassistant.fritz.box
+
+! (falls HASS Google Translate TTS nutzt)
+@@||translate.googleapis.com^$client=192.168.178.40
+@@||translate.googleapis.com^$client=homeassistant.fritz.box
+
+! --- Renault (offizielle API) ---
+@@||api-wired-prod-1-euw1.wrd-aws.com^$client=192.168.178.40
+@@||api-wired-prod-1-euw1.wrd-aws.com^$client=homeassistant.fritz.box
+
+! --- DWD Unwetterwarnungen (nur HA) ---
+@@||www.dwd.de^$client=192.168.178.40
+@@||www.dwd.de^$client=homeassistant.fritz.box
+
+! --- Radio Browser (nur HA) ---
+@@||api.radio-browser.info^$client=192.168.178.40
+@@||api.radio-browser.info^$client=homeassistant.fritz.box
+@@||*.api.radio-browser.info^$client=192.168.178.40
+@@||*.api.radio-browser.info^$client=homeassistant.fritz.box
+
+! --- Tuya Cloud (nur falls genutzt; sonst auskommentiert lassen) ---
+@@||px1.tuyaeu.com^$client=192.168.178.40
+@@||px1.tuyaeu.com^$client=homeassistant.fritz.box
+@@||tuyaeu.com^$client=192.168.178.40
+@@||tuyaeu.com^$client=homeassistant.fritz.box
+
+! --- Alexa Media (nur falls aktiv; sonst auskommentiert lassen) ---
+@@||alexa.amazon.de^$client=192.168.178.40
+@@||alexa.amazon.de^$client=homeassistant.fritz.box
+@@||pitangui.amazon.com^$client=192.168.178.40
+@@||pitangui.amazon.com^$client=homeassistant.fritz.box
+@@||layla.amazon.com^$client=192.168.178.40
+@@||layla.amazon.com^$client=homeassistant.fritz.box
