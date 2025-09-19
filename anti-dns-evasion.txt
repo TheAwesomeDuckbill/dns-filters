@@ -85,19 +85,3 @@
 ||doh.microsoft^
 ||doh.gstatic^
 ||doh.googleusercontent.com^
-
-! -------------------------
-! WHITELIST: lokale & erlaubte Einträge (deine Wunsch-Einträge)
-! -------------------------
-! (Diese Einträge verhindern, dass interne Services oder dein NAS fälschlich geblockt werden.)
-
-@@||fritz.box^
-@@||homeassistant.local^
-@@||192.168.178.23^
-@@||flower.jp.net^
-@@||*.flower.jp.net^
-@@||awesomduckbill.synology.me^
-@@||*.awesomeduckbill.synology.me^
-
-! weitere lokale/nötige whitelists (z. B. Plex / Jellyfin / eigene hosts)
-! Füge hier hinzu: @@||my.private.domain^ oder @@||192.168.178.100^
