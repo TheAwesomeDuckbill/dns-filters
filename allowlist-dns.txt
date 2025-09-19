@@ -1,0 +1,114 @@
+! ============================================================
+! Allowlist für AdGuard Home (Ausnahmen/Whitelist)
+! Stand: 2025-09-19
+! Zweck: Verhindert "False Positives" durch harte Anti-DNS-Evasion-Listen
+!        – nur notwendige Domains werden gezielt erlaubt.
+! Hinweis: KEINE pauschalen Wildcards für ganze TLDs / Provider.
+! ============================================================
+
+! --- Router / AVM / MyFritz ---
+@@||fritz.box^
+@@||*.myfritz.net^
+@@||avm.de^
+@@||*.avm.de^
+
+! --- Provider / Telekom ---
+@@||*.telekom.de^
+@@||*.t-online.de^
+
+! --- Eigene DynDNS / eigene Domains ---
+@@||awesomduckbill.synology.me^
+@@||*.awesomduckbill.synology.me^
+@@||flower.jp.net^
+@@||*.flower.jp.net^
+
+! --- Synology (Updates/QuickConnect/NTP) ---
+@@||synology.com^
+@@||*.synology.com^
+@@||quickconnect.to^
+@@||*.quickconnect.to^
+@@||time.synology.com^
+@@||update.synology.com^
+
+! --- GitHub (Repo/Raw/Objects/API) ---
+@@||github.com^
+@@||api.github.com^
+@@||raw.githubusercontent.com^
+@@||objects.githubusercontent.com^
+
+! --- Container Registries (Docker/Updates) ---
+@@||registry-1.docker.io^
+@@||index.docker.io^
+@@||auth.docker.io^
+@@||production.cloudflare.docker.com^
+@@||ghcr.io^
+@@||quay.io^
+
+! --- Portainer (Website/Downloads/Updates/Healthchecks) ---
+@@||portainer.io^
+@@||www.portainer.io^
+@@||downloads.portainer.io^
+@@||get.portainer.io^
+@@||check.portainer.io^
+
+! --- Philips Hue ---
+@@||*.meet-hue.com^            ! Cloud + Discovery
+@@||discovery.meethue.com^
+
+! --- Govee ---
+@@||*.govee.com^               ! Cloud/API/WS/MQTT
+@@||api.govee.com^
+@@||app.govee.com^
+
+! --- Home Assistant / NabuCasa ---
+@@||home-assistant.io^
+@@||*.home-assistant.io^
+@@||nabucasa.com^
+@@||*.nabucasa.com^
+
+! --- Plex / Jellyfin ---
+@@||plex.tv^
+@@||*.plex.tv^
+@@||plex.direct^               ! Lokale TLS-Verbindungen (SAN)
+@@||*.plex.direct^
+@@||jellyfin.org^
+@@||*.jellyfin.org^
+
+! --- JDownloader (Betrieb/Updates) ---
+@@||api.jdownloader.org^
+@@||update.jdownloader.org^
+
+! --- Android / Pixel (Connectivity/Push/Play) ---
+@@||connectivitycheck.gstatic.com^     ! Captive-Portal
+@@||clients3.google.com^               ! Connectivity
+@@||mtalk.google.com^                  ! FCM Push
+@@||play.googleapis.com^               ! Play Store
+@@||firebaseinstallations.googleapis.com^
+@@||firebaseremoteconfig.googleapis.com^
+@@||dl.google.com^                     ! Play/App-Downloads
+@@||gvt1.com^                          ! CDN für Google-Downloads
+
+! --- Zertifikatsprüfung (OCSP/CRL, Let’s Encrypt, Digicert, Sectigo, Google) ---
+@@||letsencrypt.org^
+@@||*.letsencrypt.org^
+@@||lencr.org^
+@@||*.lencr.org^
+@@||r3.o.lencr.org^
+@@||ocsp.pki.goog^
+@@||ocsp.digicert.com^
+@@||crl3.digicert.com^
+@@||crl4.digicert.com^
+@@||ocsp.sectigo.com^
+@@||crt.sectigo.com^
+
+! --- Mullvad (gezielt; KEIN Wildcard für *.mullvad.net, um DoH NICHT zu whitelisten) ---
+@@||www.mullvad.net^
+@@||api.mullvad.net^
+@@||am.i.mullvad.net^
+@@||relays.mullvad.net^
+@@||*.relays.mullvad.net^
+
+! --- Lokale "Pseudo-TLDs" / interne Hosts ---
+@@||*.local^
+@@||*.lan^
+@@||*.home^
