@@ -1,94 +1,80 @@
 ! ============================================================
-! Allowlist für AdGuard Home (Ausnahmen/Whitelist)
+! Allowlist für AdGuard Home (Ausnahmen/Whitelist) – strikt/minimal
+! Zweck: Nur das Nötigste erlauben, damit harte Anti-DNS-Evasion-Listen
+!        nicht produktive Dienste zerschießen.
 ! Stand: 2025-09-19
-! Zweck: Verhindert "False Positives" durch harte Anti-DNS-Evasion-Listen
-!        – nur notwendige Domains werden gezielt erlaubt.
-! Hinweis: KEINE pauschalen Wildcards für ganze TLDs / Provider.
 ! ============================================================
 
-! --- Router / AVM / MyFritz ---
+! --- Router / MyFritz (nur was funktional gebraucht wird) ---
 @@||fritz.box^
 @@||*.myfritz.net^
-@@||avm.de^
-@@||*.avm.de^
-
-! --- Provider / Telekom ---
-@@||*.telekom.de^
-@@||*.t-online.de^
 
 ! --- Eigene DynDNS / eigene Domains ---
-@@||awesomduckbill.synology.me^
-@@||*.awesomduckbill.synology.me^
+@@||awesomeduckbill.synology.me^           ! ALTERNATIVE Schreibweise – nutze die korrekte und lösche die andere
+@@||*.awesomeduckbill.synology.me^
 @@||flower.jp.net^
 @@||*.flower.jp.net^
 
-! --- Synology (Updates/QuickConnect/NTP) ---
-@@||synology.com^
-@@||*.synology.com^
-@@||quickconnect.to^
-@@||*.quickconnect.to^
-@@||time.synology.com^
-@@||update.synology.com^
+! --- Synology (gezielt, keine Broad-Whitelists) ---
+@@||update.synology.com^                   ! DSM/Package-Updates
+@@||time.synology.com^                     ! NTP von Synology
+@@||global.download.synology.com^          ! Image/Package CDN
+!@@||quickconnect.to^                      ! NUR aktivieren, wenn du QuickConnect wirklich nutzt
 
-! --- GitHub (Repo/Raw/Objects/API) ---
-@@||github.com^
-@@||api.github.com^
+! --- GitHub (nur Raw/Objects für Filter/Assets) ---
 @@||raw.githubusercontent.com^
 @@||objects.githubusercontent.com^
 
-! --- Container Registries (Docker/Updates) ---
+! --- Container Registries (für Docker/Watchtower Pulls) ---
 @@||registry-1.docker.io^
-@@||index.docker.io^
 @@||auth.docker.io^
 @@||production.cloudflare.docker.com^
 @@||ghcr.io^
-@@||quay.io^
+!@@||quay.io^                              ! Nur falls du Images von Quay nutzt
 
-! --- Portainer (Website/Downloads/Updates/Healthchecks) ---
-@@||portainer.io^
-@@||www.portainer.io^
+! --- Portainer (gezielte Endpunkte; Website-Domain NICHT nötig) ---
 @@||downloads.portainer.io^
 @@||get.portainer.io^
 @@||check.portainer.io^
 
-! --- Philips Hue ---
-@@||*.meet-hue.com^            ! Cloud + Discovery
+! --- Philips Hue (API/Discovery – keine breite Wildcards) ---
 @@||discovery.meethue.com^
+@@||api.meethue.com^
 
-! --- Govee ---
-@@||*.govee.com^               ! Cloud/API/WS/MQTT
+! --- Govee (Cloud/API/Developer – präzise Endpunkte) ---
 @@||api.govee.com^
 @@||app.govee.com^
+@@||openapi.api.govee.com^
+@@||developer-api.govee.com^
+@@||mqtt.govee.com^                        ! Nur falls tatsächlich genutzt
 
-! --- Home Assistant / NabuCasa ---
+! --- Home Assistant / Nabu Casa (richtiges TLD) ---
 @@||home-assistant.io^
 @@||*.home-assistant.io^
-@@||nabucasa.com^
-@@||*.nabucasa.com^
+@@||nabu.casa^
+@@||*.nabu.casa^                           ! Remote UI etc.
 
-! --- Plex / Jellyfin ---
+! --- Plex / Jellyfin (für Login/Remote/TLS-intern) ---
 @@||plex.tv^
 @@||*.plex.tv^
-@@||plex.direct^               ! Lokale TLS-Verbindungen (SAN)
-@@||*.plex.direct^
-@@||jellyfin.org^
-@@||*.jellyfin.org^
+@@||*.plex.direct^                         ! lokales TLS (SAN)
+!@@||jellyfin.org^                         ! Nur wenn du externe Jellyfin-Dienste/Repos brauchst
 
 ! --- JDownloader (Betrieb/Updates) ---
 @@||api.jdownloader.org^
 @@||update.jdownloader.org^
 
-! --- Android / Pixel (Connectivity/Push/Play) ---
-@@||connectivitycheck.gstatic.com^     ! Captive-Portal
-@@||clients3.google.com^               ! Connectivity
-@@||mtalk.google.com^                  ! FCM Push
-@@||play.googleapis.com^               ! Play Store
+! --- Android / Pixel (Connectivity/Push/Play – minimal) ---
+@@||connectivitycheck.gstatic.com^         ! Captive-Portal-Check
+@@||clients3.google.com^                   ! Connectivity-Check
+@@||mtalk.google.com^                      ! FCM Push
+@@||play.googleapis.com^                   ! Play Store
 @@||firebaseinstallations.googleapis.com^
 @@||firebaseremoteconfig.googleapis.com^
-@@||dl.google.com^                     ! Play/App-Downloads
-@@||gvt1.com^                          ! CDN für Google-Downloads
+@@||dl.google.com^                         ! App-/Play-Downloads
+@@||gvt1.com^                              ! Google CDN für Downloads
 
-! --- Zertifikatsprüfung (OCSP/CRL, Let’s Encrypt, Digicert, Sectigo, Google) ---
+! --- Zertifikatsprüfung (OCSP/CRL; nötig für TLS-Kette) ---
 @@||letsencrypt.org^
 @@||*.letsencrypt.org^
 @@||lencr.org^
@@ -101,14 +87,14 @@
 @@||ocsp.sectigo.com^
 @@||crt.sectigo.com^
 
-! --- Mullvad (gezielt; KEIN Wildcard für *.mullvad.net, um DoH NICHT zu whitelisten) ---
-@@||www.mullvad.net^
+! --- Mullvad (nur was für App/CLI/Checks nötig ist; KEIN DoH-Whitelist) ---
 @@||api.mullvad.net^
 @@||am.i.mullvad.net^
 @@||relays.mullvad.net^
 @@||*.relays.mullvad.net^
+! (Kein www.mullvad.net, kein dns.mullvad.net/doh – DoH soll NICHT um die Filter herum!)
 
-! --- Lokale "Pseudo-TLDs" / interne Hosts ---
+! --- Lokale Pseudo-TLDs / interne Hosts (optional) ---
 @@||*.local^
 @@||*.lan^
 @@||*.home^
