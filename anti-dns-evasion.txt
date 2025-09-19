@@ -1,0 +1,103 @@
+! anti-dns-evasion.txt — harte Version
+! Zweck: blockiert bekannte DoH/DoT/alternative-resolver-Endpunkte,
+! damit Clients nicht an externen DNS-Providern vorbei „telefonieren“.
+! WHITELIST-SECTION unten sorgt dafür, dass deine internen Names & Hosts weiter funktionieren.
+
+! -------------------------
+! BLOCK: bekannte DoH / DoT / public-dns endpoints
+! -------------------------
+
+||dns.google^
+||dns.google.com^
+||dns.google/dns-query^
+||dns.google/experimental^
+||doh.opendns.com^
+||doh2.opendns.com^
+||doh.familyshield.opendns.com^
+||doh.cleanbrowsing.org^
+||doh.cloudflare-dns.com^
+||cloudflare-dns.com^
+||mozilla.cloudflare-dns.com^
+||security.cloudflare-dns.com^
+||doh.securedns.eu^
+||dns.quad9.net^
+||doh.quad9.net^
+||dns.opendns.com^
+||dns.nextdns.io^
+||doh.nextdns.io^
+||dns.adguard.com^
+||dns-family.adguard.com^
+||dns-unfiltered.adguard.com^
+||doh.dns.sb^
+||dns.sb^
+||dns1.telstra.net^
+||dns2.telstra.net^
+||dns1.yandex^
+||doh.yandex^
+||doh2.yandex^
+||dns.cloudflare.com^
+||doh.cloudflare.com^
+||dns.cloudflare-dns.com^
+||doh.mozilla.cloudflare-dns.com^
+||doh.dnscrypt.org^
+||doh.cryptoapi.io^
+||doh-libres^
+||doh.censurfridns.dk^
+||dns.01.org^
+||dns19.quad9.net^
+||dns10.quad9.net^
+||doh.nerd.dk^
+||dns8.quad9.net^
+||dns12.quad9.net^
+||doh.opendoh.org^
+||dns.ripe.net^
+||dns.he.net^
+||doh.secureworks.com^
+||dnsforge.de^
+||doh.publicdns.xyz^
+||doh.googleapis.com^
+||dns.google-dns.com^
+||doh.pi-hole.net^
+||dns.pw^
+||doh.pw^
+||doh.ns1.com^
+||dns1.p01.nsone.net^
+||dns2.p01.nsone.net^
+||doh.fastly^
+||dns.fastly.com^
+||doh.facebook^
+||dns.facebook.com^
+
+! -------------------------
+! OPTIONAL: extra providers / known resolver hostnames (catch more variants)
+! -------------------------
+
+||doh.privacy.net^
+||dns.nextdns-p1^
+||doh.dnsadvantage.com^
+||dns.dnsadvantage.com^
+||doh.clear.net^
+||doh.svc.clouddns^
+||dns.alt^
+||doh.alt^
+||doh.opendoh^
+||doh.twitchcdn^
+||doh.microsoft^
+||doh.gstatic^
+||doh.googleusercontent.com^
+
+! -------------------------
+! WHITELIST: lokale & erlaubte Einträge (deine Wunsch-Einträge)
+! -------------------------
+! (Diese Einträge verhindern, dass interne Services oder dein NAS fälschlich geblockt werden.)
+
+@@||fritz.box^
+@@||homeassistant.local^
+@@||192.168.178.23^
+@@||flower.jp.net^
+@@||*.flower.jp.net^
+@@||awesomduckbill.synology.me^
+@@||*.awesomeduckbill.synology.me^
+
+! weitere lokale/nötige whitelists (z. B. Plex / Jellyfin / eigene hosts)
+! Füge hier hinzu: @@||my.private.domain^ oder @@||192.168.178.100^
