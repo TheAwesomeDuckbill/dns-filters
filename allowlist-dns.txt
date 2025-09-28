@@ -1,7 +1,7 @@
 ! ============================================================
 ! Allowlist – MAIN (minimal + stabil, inkl. Gäste/Android/Fire TV)
 ! + HA-spezifische Ausnahmen am Ende (client-scoped)
-! Stand: 2025-09-19
+! Stand: 2025-09-28
 ! ============================================================
 
 ! --- Router / MyFritz (Remote-Domain) ---
@@ -66,6 +66,7 @@
 ! --- JDownloader (Betrieb/Updates) ---
 @@||api.jdownloader.org^
 @@||update.jdownloader.org^
+@@||my.jdownloader.org^
 
 ! --- Zertifikate/OCSP/CRL (LE/DigiCert/Sectigo/Google) ---
 @@||letsencrypt.org^
